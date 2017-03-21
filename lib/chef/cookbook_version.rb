@@ -40,10 +40,11 @@ class Chef
     extend Forwardable
 
     def_delegator :@cookbook_manifest, :files_for
+    def_delegator :@cookbook_manifest, :files_except
 
     COOKBOOK_SEGMENTS = [ :resources, :providers, :recipes, :definitions, :libraries, :attributes, :files, :templates, :root_files ]
 
-    attr_accessor :all_files
+    attr_reader :all_files
 
     attr_accessor :root_paths
     attr_accessor :name
@@ -71,6 +72,13 @@ class Chef
     # The first root path is the primary cookbook dir, from which metadata is loaded
     def root_dir
       root_paths[0]
+    end
+
+    # When we get a new list of files, we must reset the manifest so that we regenerate checksums
+    # and so on
+    def all_files=(files)
+      cookbook_manifest.reset!
+      @all_files = Array(files)
     end
 
     # This is the one and only method that knows how cookbook files'

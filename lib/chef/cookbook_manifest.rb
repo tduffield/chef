@@ -167,6 +167,14 @@ class Chef
       end
     end
 
+    def files_except(parts = [])
+      parts = Array(parts).map { |p| p.to_s }
+      manifest[:all_files].reject do |file|
+        seg = file[:name].split("/")[0]
+        parts.include?(seg)
+      end
+    end
+
     def root_files
       manifest[:all_files].select do |file|
         file[:name].split("/").length == 1
