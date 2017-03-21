@@ -40,7 +40,7 @@ class Chef
     extend Forwardable
 
     def_delegator :@cookbook_manifest, :files_for
-    def_delegator :@cookbook_manifest, :files_except
+    def_delegator :@cookbook_manifest, :each_file
 
     COOKBOOK_SEGMENTS = [ :resources, :providers, :recipes, :definitions, :libraries, :attributes, :files, :templates, :root_files ]
 

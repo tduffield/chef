@@ -167,11 +167,13 @@ class Chef
       end
     end
 
-    def files_except(parts = [])
-      parts = Array(parts).map { |p| p.to_s }
-      manifest[:all_files].reject do |file|
+    def each_file(excluded_parts: [], &block)
+      excluded_parts = Array(excluded_parts).map { |p| p.to_s }
+
+      manifest[:all_files].each do |file|
         seg = file[:name].split("/")[0]
-        parts.include?(seg)
+        next if excluded_parts.include?(seg)
+        yield file if block_given?
       end
     end
 

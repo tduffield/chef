@@ -67,7 +67,6 @@ class Chef
     attr_accessor :remove_obsoleted_files
 
     def initialize(cookbooks_by_name, events)
-
       @cookbooks_by_name, @events = cookbooks_by_name, events
 
       @cookbook_full_file_paths = {}
@@ -106,7 +105,7 @@ class Chef
                 end
 
       @files ||= cookbooks.inject([]) do |memo, cookbook|
-        cookbook.files_except(exclude).each do |manifest_record|
+        cookbook.each_file(excluded_parts: exclude) do |manifest_record|
           memo << CookbookFile.new(cookbook, manifest_record)
         end
         memo
