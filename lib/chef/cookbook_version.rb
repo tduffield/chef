@@ -159,14 +159,11 @@ class Chef
       cookbook_manifest.manifest_records_by_path
     end
 
-    def manifest=(new_manifest)
-      cookbook_manifest.update_from(new_manifest)
-    end
-
     # Return recipe names in the form of cookbook_name::recipe_name
     def fully_qualified_recipe_names
       files_for("recipes").inject([]) do |memo, recipe|
         rname = recipe[:name].split("/")[1]
+        rname = File.basename(rname, ".rb")
         memo << "#{name}::#{rname}"
         memo
       end

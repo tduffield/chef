@@ -110,7 +110,7 @@ describe Chef::CookbookManifest do
 
     let(:cookbook_root) { File.join(CHEF_SPEC_DATA, "cb_version_cookbooks", "tatft") }
 
-    let(:all_files)             { Dir[File.join(cookbook_root, "**", "**")].reject { |f| File.directory? f } }
+    let(:all_files) { Dir[File.join(cookbook_root, "**", "**")].reject { |f| File.directory? f } }
 
     let(:match_md5) { /[0-9a-f]{32}/ }
 
@@ -147,7 +147,7 @@ describe Chef::CookbookManifest do
 
         "frozen?" => false,
 
-        "all_files"     => map_to_file_specs(all_files),
+        "all_files" => map_to_file_specs(all_files),
       }
     end
 
