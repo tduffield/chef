@@ -21,6 +21,7 @@ gem "cheffish" # required for rspec tests
 
 group(:omnibus_package) do
   gem "appbundler"
+  gem "inspec"
   gem "rb-readline"
   # CVE-2016-4658 https://github.com/sparklemotion/nokogiri/issues/1615
   gem "nokogiri", ">= 1.7.1"
