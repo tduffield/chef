@@ -15,7 +15,10 @@
 # limitations under the License.
 
 require "forwardable"
+require "chef/mixin/versioned_api"
 require "chef/util/path_helper"
+require "chef/cookbook/manifest_v0"
+require "chef/cookbook/manifest_v2"
 require "chef/log"
 
 class Chef
@@ -155,7 +158,7 @@ class Chef
     # make the corresponding changes to the cookbook_version object. Required
     # to provide backward compatibility with CookbookVersion#manifest= method.
     def update_from(new_manifest)
-      @manifest = Mash.new new_manifest
+      @manifest = CookbManifestVersions.from_hash(new_manifest)
       @checksums = extract_checksums_from_manifest(@manifest)
       @manifest_records_by_path = extract_manifest_records_by_path(@manifest)
     end
@@ -284,6 +287,15 @@ class Chef
         memo[manifest_record[:path]] = manifest_record
         memo
       end
+    end
+
+    class CookbManifestVersions
+
+      extend Chef::Mixin::VersionedAPIFactory
+      add_versioned_api_class Chef::Cookbook::ManifestV0
+      add_versioned_api_class Chef::Cookbook::ManifestV2
+
+      def_versioned_delegator :from_hash
     end
   end
 end

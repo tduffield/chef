@@ -19,7 +19,8 @@
 require "spec_helper"
 
 describe Chef::CookbookVersion do
-#  COOKBOOK_PATH = File.expand_path(File.join(File.dirname(__FILE__), "..", "data", "cookbooks", "openldap"))
+  COOKBOOK_PATH = File.expand_path(File.join(File.dirname(__FILE__), "..", "data", "cookbooks", "openldap"))
+
   before(:each) do
     @cookbook_repo = File.expand_path(File.join(File.dirname(__FILE__), "..", "data", "cookbooks"))
     cl = Chef::CookbookLoader.new(@cookbook_repo)
@@ -38,14 +39,14 @@ describe Chef::CookbookVersion do
 
   it "should allow you to set the list of attribute files and create the mapping from short names to paths" do
     expect(@cookbook.attribute_filenames_by_short_filename.keys.sort).to eql(%w{default smokey})
-    expect(@cookbook.attribute_filenames_by_short_filename["default"]).to eq("attributes/default.rb")
-    expect(@cookbook.attribute_filenames_by_short_filename["smokey"]).to eq("attributes/smokey.rb")
+    expect(@cookbook.attribute_filenames_by_short_filename["default"]).to eq(File.join(COOKBOOK_PATH, "attributes/default.rb"))
+    expect(@cookbook.attribute_filenames_by_short_filename["smokey"]).to eq(File.join(COOKBOOK_PATH, "attributes/smokey.rb"))
   end
 
   it "should allow you to set the list of recipe files and create the mapping of recipe short name to filename" do
     expect(@cookbook.recipe_filenames_by_name.keys.sort).to eql(%w{default gigantor one return})
-    expect(@cookbook.recipe_filenames_by_name["one"]).to eq("recipes/one.rb")
-    expect(@cookbook.recipe_filenames_by_name["gigantor"]).to eq("recipes/gigantor.rb")
+    expect(@cookbook.recipe_filenames_by_name["one"]).to eq(File.join(COOKBOOK_PATH, "recipes/one.rb"))
+    expect(@cookbook.recipe_filenames_by_name["gigantor"]).to eq(File.join(COOKBOOK_PATH, "recipes/gigantor.rb"))
   end
 
   it "should generate a list of recipes by fully-qualified name" do

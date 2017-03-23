@@ -74,11 +74,9 @@ class Chef
       root_paths[0]
     end
 
-    # When we get a new list of files, we must reset the manifest so that we regenerate checksums
-    # and so on
     def all_files=(files)
-      cookbook_manifest.reset!
       @all_files = Array(files)
+      cookbook_manifest.reset!
     end
 
     # This is the one and only method that knows how cookbook files'
@@ -400,8 +398,8 @@ class Chef
       cookbook_version = new(o["cookbook_name"] || o["name"])
 
       # We want the Chef::Cookbook::Metadata object to always be inflated
-      cookbook_version.metadata = Chef::Cookbook::Metadata.from_hash(o["metadata"])
       cookbook_version.manifest = o
+      cookbook_version.metadata = Chef::Cookbook::Metadata.from_hash(o["metadata"])
       cookbook_version.identifier = o["identifier"] if o.key?("identifier")
 
       # We don't need the following step when we decide to stop supporting deprecated operators in the metadata (e.g. <<, >>)
@@ -438,7 +436,7 @@ class Chef
     end
 
     def self.chef_server_rest
-      Chef::ServerAPI.new(Chef::Config[:chef_server_url])
+      Chef::ServerAPI.new(Chef::Config[:chef_server_url], { api_version: "2" })
     end
 
     def destroy
@@ -507,13 +505,19 @@ class Chef
 
     # For each manifest record, produce a mapping of base filename (i.e. recipe name
     # or attribute file) to on disk location
+    def relative_paths_by_name(records)
+      records.select { |record| record[:name] =~ /\.rb$/ }.inject({}) { |memo, record| memo[File.basename(record[:name], ".rb")] = record[:path]; memo }
+    end
+
+    # For each manifest record, produce a mapping of base filename (i.e. recipe name
+    # or attribute file) to on disk location
     def filenames_by_name(records)
       records.select { |record| record[:name] =~ /\.rb$/ }.inject({}) { |memo, record| memo[File.basename(record[:name], ".rb")] = record[:full_path]; memo }
     end
 
     def file_vendor
       unless @file_vendor
-        @file_vendor = Chef::Cookbook::FileVendor.create_from_manifest(manifest)
+        @file_vendor = Chef::Cookbook::FileVendor.create_from_manifest(cookbook_manifest)
       end
       @file_vendor
     end

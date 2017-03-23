@@ -159,6 +159,8 @@ class Chef
 
       @events.cookbook_sync_start(cookbook_count)
       queue.process(Chef::Config[:cookbook_sync_threads])
+      # Ensure that cookbooks know where they're rooted at, for manifest purposes.
+      ensure_cookbook_paths
       # Update the full file paths in the manifest
       update_cookbook_filenames
 
@@ -227,6 +229,13 @@ class Chef
     def update_cookbook_filenames
       @cookbook_full_file_paths.each do |cookbook, full_paths|
         cookbook.all_files = full_paths
+      end
+    end
+
+    def ensure_cookbook_paths
+      cookbooks.each do |cookbook|
+        cb_dir = File.join(Chef::Config[:file_cache_path], "cookbooks", cookbook.name)
+        cookbook.root_paths = Array(cb_dir)
       end
     end
 
