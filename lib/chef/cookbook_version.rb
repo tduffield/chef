@@ -490,12 +490,11 @@ class Chef
       Chef::Version.new(version) <=> Chef::Version.new(other.version)
     end
 
-    private
-
     def cookbook_manifest
       @cookbook_manifest ||= CookbookManifest.new(self)
     end
 
+    private
     def find_preferred_manifest_record(node, segment, filename)
       preferences = preferences_for_path(node, segment, filename)
 
