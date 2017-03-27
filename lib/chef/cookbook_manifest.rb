@@ -158,7 +158,7 @@ class Chef
     # make the corresponding changes to the cookbook_version object. Required
     # to provide backward compatibility with CookbookVersion#manifest= method.
     def update_from(new_manifest)
-      @manifest = CookbManifestVersions.from_hash(new_manifest)
+      @manifest = Chef::CookbookManifestVersions.from_hash(new_manifest)
       @checksums = extract_checksums_from_manifest(@manifest)
       @manifest_records_by_path = extract_manifest_records_by_path(@manifest)
     end
@@ -289,13 +289,13 @@ class Chef
       end
     end
 
-    class CookbManifestVersions
+  end
+  class CookbookManifestVersions
 
-      extend Chef::Mixin::VersionedAPIFactory
-      add_versioned_api_class Chef::Cookbook::ManifestV0
-      add_versioned_api_class Chef::Cookbook::ManifestV2
+    extend Chef::Mixin::VersionedAPIFactory
+    add_versioned_api_class Chef::Cookbook::ManifestV0
+    add_versioned_api_class Chef::Cookbook::ManifestV2
 
-      def_versioned_delegator :from_hash
-    end
+    def_versioned_delegator :from_hash
   end
 end

@@ -39,10 +39,6 @@ class Chef
         versioned_interfaces << klass
       end
 
-      def versioned_response_class
-        get_class_for(:response_version)
-      end
-
       def versioned_api_class
         get_class_for(:max_server_version)
       end

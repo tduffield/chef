@@ -436,7 +436,7 @@ class Chef
     end
 
     def self.chef_server_rest
-      Chef::ServerAPI.new(Chef::Config[:chef_server_url], { api_version: "2" })
+      Chef::ServerAPI.new(Chef::Config[:chef_server_url], { api_version: Chef::CookbookManifestVersions.best_request_version })
     end
 
     def destroy
