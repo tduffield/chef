@@ -147,7 +147,11 @@ class Chef
           end
 
           def rest
-            parent.rest
+            Chef::ServerAPI.new(parent.rest.url, parent.rest.options.merge(version_class: Chef::CookbookManifestVersions))
+          end
+
+          def chef_rest
+            Chef::ServerAPI.new(parent.chef_rest.url, parent.chef_rest.options.merge(version_class: Chef::CookbookManifestVersions))
           end
 
           def chef_object
@@ -169,7 +173,7 @@ class Chef
               old_retry_count = Chef::Config[:http_retry_count]
               begin
                 Chef::Config[:http_retry_count] = 0
-                @chef_object ||= Chef::CookbookVersion.from_hash(root.get_json(api_path))
+                @chef_object ||= Chef::CookbookVersion.from_hash(chef_rest.get(api_path))
               ensure
                 Chef::Config[:http_retry_count] = old_retry_count
               end

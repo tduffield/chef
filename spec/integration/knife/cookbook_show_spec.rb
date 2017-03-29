@@ -37,10 +37,8 @@ describe "knife cookbook show", :workstation do
     # rubocop:disable Style/TrailingWhitespace
     it "knife cookbook show x 1.0.0 shows the correct version" do
       knife("cookbook show x 1.0.0").should_succeed <<EOM
-chef_type:     cookbook_version
 cookbook_name: x
 frozen?:       false
-json_class:    Chef::CookbookVersion
 metadata:
   attributes:
   chef_versions:

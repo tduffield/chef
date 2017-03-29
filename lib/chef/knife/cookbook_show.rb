@@ -82,9 +82,7 @@ class Chef
             output(cookbook.files_for(segment))
           end
         when 2 # We are showing the whole cookbook
-          cb = cookbook.metadata.to_hash
-          cb.merge!(cookbook.cookbook_manifest.by_parent_directory)
-          output(cb)
+          output(cookbook.display)
         when 1 # We are showing the cookbook versions (all of them)
           env           = config[:environment]
           api_endpoint  = env ? "environments/#{env}/cookbooks/#{cookbook_name}" : "cookbooks/#{cookbook_name}"

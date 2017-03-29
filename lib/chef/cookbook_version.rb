@@ -394,6 +394,16 @@ class Chef
     end
     private :preferences_for_path
 
+    def display
+      output = Mash.new
+      output["cookbook_name"] = name
+      output["name"] = full_name
+      output["frozen?"] = frozen_version?
+      output["metadata"] = metadata.to_hash
+      output["version"] = version
+      output.merge(cookbook_manifest.by_parent_directory)
+    end
+
     def self.from_hash(o)
       cookbook_version = new(o["cookbook_name"] || o["name"])
 
