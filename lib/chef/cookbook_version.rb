@@ -436,7 +436,7 @@ class Chef
     end
 
     def self.chef_server_rest
-      Chef::ServerAPI.new(Chef::Config[:chef_server_url], { api_version: Chef::CookbookManifestVersions.best_request_version })
+      Chef::ServerAPI.new(Chef::Config[:chef_server_url], { version_class: Chef::CookbookManifestVersions })
     end
 
     def destroy
@@ -495,6 +495,7 @@ class Chef
     end
 
     private
+
     def find_preferred_manifest_record(node, segment, filename)
       preferences = preferences_for_path(node, segment, filename)
 

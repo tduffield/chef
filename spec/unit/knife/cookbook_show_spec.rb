@@ -101,9 +101,35 @@ describe Chef::Knife::CookbookShow do
         knife.name_args << "0.1.0"
       end
 
+      let(:output) do
+        { "name" => nil,
+          "description" => "",
+          "long_description" => "",
+          "maintainer" => nil,
+          "maintainer_email" => nil,
+          "license" => "All rights reserved",
+          "platforms" => {},
+          "dependencies" => {},
+          "providing" => {},
+          "attributes" => {},
+          "recipes" =>
+        [{ "name" => "recipes/default.rb",
+           "path" => "recipes/default.rb",
+           "checksum" => "1234",
+           "url" => "http://example.org/files/default.rb" }],
+          "version" => "0.0.0",
+          "source_url" => "",
+          "issues_url" => "",
+          "privacy" => false,
+          "chef_versions" => [],
+          "ohai_versions" => [],
+          "gems" => [],
+        }
+      end
+
       it "should show the specific part of a cookbook" do
         expect(Chef::CookbookVersion).to receive(:load).with("cookbook_name", "0.1.0").and_return(cb)
-        expect(knife).to receive(:output).with(cb.manifest)
+        expect(knife).to receive(:output).with(output)
         knife.run
       end
     end

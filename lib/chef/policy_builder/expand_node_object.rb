@@ -240,7 +240,7 @@ class Chef
 
       def api_service
         @api_service ||= Chef::ServerAPI.new(config[:chef_server_url],
-                                             { api_version: Chef::CookbookManifestVersions.best_request_version })
+                                             { version_class: Chef::CookbookManifestVersions })
       end
 
       def config

@@ -82,7 +82,6 @@ describe Chef::Cookbook::FileVendor do
       cbv.cookbook_manifest
     end
 
-
     before do
       file_vendor_class.fetch_from_disk(cookbook_path)
     end
