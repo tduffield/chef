@@ -29,11 +29,13 @@ class Chef
       def self.from_hash(hash)
         response = Mash.new
         response[:all_files] = COOKBOOK_SEGMENTS.inject([]) do |memo, segment|
+          segment = segment.to_s
           next memo if hash[segment].nil? || hash[segment].empty?
           hash[segment].each do |file|
+            file["name"] = "#{segment}/#{file["name"]}" unless segment == "root_files"
             memo << file
-            memo
           end
+          memo
         end
         response
       end
