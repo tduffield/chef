@@ -1,0 +1,14 @@
+product_key: chef
+
+slack:
+  notify_channel: bot-testing
+
+docker:
+  enable: true
+  build_args:
+    CHANNEL: "{{channel}}"
+    VERSION: "{{version}}"
+
+github:
+  bump_version_on_merge: true
+  trigger_build_on_bump: false
